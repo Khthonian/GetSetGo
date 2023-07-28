@@ -11,6 +11,10 @@ sudo add-apt-repository -y ppa:git-core/ppa
 sudo apt update
 sudo apt install -y git
 
+# Ask the user for Git configurations
+read -p "Enter your name for Git user.name: " git_username
+read -p "Enter your email for Git user.email: " git_email
+
 # Install Edge
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
@@ -43,8 +47,8 @@ sudo apt update
 sudo apt install -y code
 
 # Configure git
-git config --global user.name "Khthonian"
-git config --global user.email "anansicorp@tuta.io"
+git config --global user.name "$git_username"
+git config --global user.email "$git_email"
 git config --global init.defaultBranch main
 git config --global color.ui auto
 git config --global pull.rebase false
