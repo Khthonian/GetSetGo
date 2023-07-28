@@ -1,6 +1,6 @@
 # GetSetGo
 
-This BASH script automates the setup process for a fresh Linux system. It installs essential packages and configures various tools to streamline your development environment.
+This BASH script automates the setup process for a fresh Ubuntu Linux system. It installs essential packages and configures various tools to streamline your development environment.
 
 ## Features
 
