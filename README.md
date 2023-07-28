@@ -33,5 +33,8 @@ During the script execution, you will be prompted to provide your name and email
 - Use this script at your own risk. Although it has been designed to be safe and non-destructive, there might be unforeseen issues depending on your system's configuration.
 - Before running the script, ensure you have a backup of your important data.
 
+## License
+This project is licensed under the [MIT License](LICENSE.md).
+
 ## Contributions
 Contributions are welcome! If you find any issues or want to add new features, feel free to open an issue or submit a pull request.
