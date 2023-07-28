@@ -1,2 +1,2 @@
 # GetSetGo
-An script to initialise my system.
+An script I use to initialise my system.
