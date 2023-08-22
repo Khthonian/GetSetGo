@@ -3,13 +3,40 @@
 # Update package lists and upgrade the system
 sudo apt update && sudo apt upgrade -y
 
-# Install curl
-sudo apt install -y curl
+# Install common tools
+sudo apt install -y curl wget build-essential
 
 # Install git
 sudo add-apt-repository -y ppa:git-core/ppa
 sudo apt update
 sudo apt install -y git
+
+# Install Zsh
+sudo apt install -y zsh
+chsh -s $(which zsh)
+
+# Install Kitty Terminal
+sudo apt install -y kitty
+
+# Install Python
+sudo apt install -y python3 python3-pip
+
+# Install Lua
+sudo apt install -y lua5.3
+
+# Install Go
+sudo apt install -y golang-go
+
+# Install Rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Install GCC
+sudo apt install -y gcc
+
+# Install Anaconda
+wget https://repo.anaconda.com/archive/Anaconda3-2023.07-2-Linux-x86_64.sh
+bash Anaconda3-2023.07-2-Linux-x86_64.sh
+rm Anaconda3-2023.07-2-Linux-x86_64.sh
 
 # Ask the user for Git configurations
 read -p "Enter your name for Git user.name: " git_username
