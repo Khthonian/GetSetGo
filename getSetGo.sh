@@ -69,6 +69,30 @@ install_zsh() {
     echo "Default shell for $user changed from $user_shell to $(which zsh)"
 }
 
+# Define a function to install Fish and switch the default shell for the user who initiates the script
+install_fish() {
+    sudo apt-add-repository ppa:fish-shell/release-3
+    sudo apt update
+    sudo apt install -y fish || {
+        echo "Fish installation failed"
+        exit 1
+    }
+    # Determine the user who ran the script
+    if [ ! -z "$SUDO_USER" ]; then
+        user="$SUDO_USER"
+    else
+        user="$(whoami)"
+    fi
+    # Get the current shell for the user
+    user_shell=$(getent passwd $user | cut -d: -f7)
+    # Switch the default user shell to Fish
+    chsh -s $(which fish) $user || {
+        echo "Changing default shell to Fish failed"
+        exit 1
+    }
+    echo "Default shell for $user changed from $user_shell to $(which fish)"
+}
+
 # Define a function to install Kitty terminal
 install_kitty() {
     sudo apt install -y kitty || {
@@ -293,8 +317,21 @@ select_from_category() {
     done
     echo "$i) Skip category"
 
-    read -p "Enter your choices (comma-separated, e.g., 1,2,3): " user_choices
-    IFS=',' read -ra selections <<<"$user_choices"
+    local valid_input=false
+    while [ "$valid_input" == "false" ]; do
+        read -p "Enter your choices (comma-separated, e.g., 1,2,3): " user_choices
+        IFS=',' read -ra selections <<<"$user_choices"
+
+        # Validate user input
+        valid_input=true
+        for selection in "${selections[@]}"; do
+            if [[ "$selection" -lt 1 || "$selection" -gt "$i" ]]; then
+                echo "Invalid option in $category_name category. Please choose numbers between 1 and $i."
+                valid_input=false
+                break
+            fi
+        done
+    done
 
     # Check for the "Skip category" option
     if [[ " ${selections[*]} " == *" $i "* ]]; then
@@ -325,7 +362,9 @@ main() {
     declare -A terminal_tools=(
         ["Kitty"]="install_kitty"
         ["Zsh"]="install_zsh"
+        ["Fish"]="install_fish"
     )
+    select_from_category "Terminal" terminal_tools
 
     declare -A dev_tools=(
         ["Git"]="install_git"
@@ -361,6 +400,7 @@ main() {
         ["Discord"]="install_discord"
         ["Spotify"]="install_spotify"
     )
+    select_from_category "Media" media
 
     declare -A utilities=(
         ["tmux"]="install_tmux"
