@@ -186,6 +186,39 @@ install_vscode() {
     }
 }
 
+# Function to install Vim
+install_vim() {
+  sudo apt install -y vim || { echo "Vim installation failed"; exit 1; }
+}
+
+# Function to install Neovim
+install_neovim() {
+  sudo apt install -y neovim || { echo "NeoVim installation failed"; exit 1; }
+}
+
+# Function to install Firefox
+install_firefox() {
+  sudo apt install -y firefox || { echo "Firefox installation failed"; exit 1; }
+}
+
+# Function to install Google Chrome
+install_chrome() {
+  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  sudo dpkg -i google-chrome-stable_current_amd64.deb
+  sudo apt install -fy
+  rm google-chrome-stable_current_amd64.deb || { echo "Google Chrome installation failed"; exit 1; }
+}
+
+# Function to install tmux
+install_tmux() {
+  sudo apt install -y tmux || { echo "tmux installation failed"; exit 1; }
+}
+
+# Function to install htop
+install_htop() {
+  sudo apt install -y htop || { echo "htop installation failed"; exit 1; }
+}
+
 # Function to install nvm and Node
 install_node() {
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
