@@ -18,13 +18,13 @@ This BASH script automates the setup process for a fresh Ubuntu Linux system. It
 
 ## Usage
 
-1. Clone this repository to your local machine or download the [script](system_setup_script.sh) directly.
+1. Clone this repository to your local machine or download the [script](getSetGo.sh) directly.
 2. Make the script executable:
    ```bash
-   chmod +x system_setup_script.sh```
+   chmod +x getSetGo.sh```
 3. Run the script with superuser privileges:
    ```bash
-   sudo ./system_setup_script.sh```
+   sudo ./getSetGo.sh```
 
 ## Git Configuration
 During the script execution, you will be prompted to provide your name and email for Git configuration. These values are used to set up your identity for Git commits.
