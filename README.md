@@ -3,27 +3,14 @@
 This BASH script automates the setup process for a fresh Ubuntu Linux system. It installs essential packages and configures various tools to streamline your development environment.
 
 ## Features
-- **General Tools:**
-  - curl
-  - git 
-  - zsh
-  - kitty terminal
-- **Languages:** 
-  - Python
-  - Lua
-  - Go
-  - Rust
-  - GCC compiler
-- **Development Tools:**
-  - Anaconda
-  - Node.js and npm using nvm (Node Version Manager)
-  - Visual Studio Code
-- **Browser and Communication:**
-  - Microsoft Edge browser
-  - Discord
-- **Utilities:** 
-  - Bitwarden password manager
-  - Spotify
+- Common tools
+- Terminal tools
+- Development tools
+- Languages
+- Text editors
+- Web browsers
+- Media
+- Utilities
 
 ## Usage
 
@@ -41,7 +28,7 @@ During the script execution, you will be prompted to provide your name and email
 
 ## Disclaimer
 - Use this script at your own risk. Although it has been designed to be safe and non-destructive, there might be unforeseen issues depending on your system's configuration.
-- Before running the script, ensure you have a backup of your important data.
+- Before running the script, it is good practice to ensure you have a backup of your important data.
 
 ## License
 This project is licensed under the [MIT License](LICENSE.md).
