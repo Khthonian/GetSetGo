@@ -308,42 +308,41 @@ select_from_category() {
     declare -n options="$2"
     local selections=()
 
-    # Print the options + the "Skip category" option
-    echo -e "\nSelect from the $category_name category:"
+    # Print the options
+    echo -e "\\nSelect from the $category_name category:"
     local i=1
-    for key in "${!options[@]}"; do
+    local keys=("${!options[@]}")
+    for key in "${keys[@]}"; do
         echo "$i) $key"
         i=$((i + 1))
     done
-    echo "$i) Skip category"
 
+    # Prompt for user input and validate
     local valid_input=false
     while [ "$valid_input" == "false" ]; do
-        read -p "Enter your choices (comma-separated, e.g., 1,2,3): " user_choices
-        IFS=',' read -ra selections <<<"$user_choices"
+        read -p "Enter your choices (comma-separated, e.g., 1,2,3) or press Enter to skip: " user_choices
+        if [ -z "$user_choices" ]; then
+            echo "Skipping $category_name category."
+            return
+        fi
 
-        # Validate user input
+        IFS=',' read -ra selections <<<"$user_choices"
         valid_input=true
         for selection in "${selections[@]}"; do
-            if [[ "$selection" -lt 1 || "$selection" -gt "$i" ]]; then
-                echo "Invalid option in $category_name category. Please choose numbers between 1 and $i."
+            if ! [[ "$selection" =~ ^[0-9]+$ ]] || [[ "$selection" -lt 1 || "$selection" -gt "${#options[@]}" ]]; then
+                echo "Invalid option in $category_name category. Please choose numbers between 1 and ${#options[@]} or press Enter to skip."
                 valid_input=false
                 break
             fi
         done
     done
 
-    # Check for the "Skip category" option
-    if [[ " ${selections[*]} " == *" $i "* ]]; then
-        echo "Skipping $category_name category."
-        return
-    fi
-
     # Execute and install the selected options
     for selection in "${selections[@]}"; do
         index=$((selection - 1))
-        if [ "$index" -ge 0 ] && [ "$index" -lt "${#options[@]}" ]; then
-            eval "${options[$index]}"
+        func_name="${options[${keys[$index]}]}"
+        if [ -n "$func_name" ]; then
+            eval "$func_name"
         fi
     done
 }
