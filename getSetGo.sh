@@ -408,7 +408,6 @@ main() {
     )
     select_from_category "Utilities" utilities
 
-    configure_git
     echo "Installation complete!"
 }
 
