@@ -33,6 +33,14 @@ install_base_devel() {
     }
 }
 
+# Define a function to install yay
+install_yay() {
+    sudo pacman -S yay --noconfirm || {
+        echo "yay installation failed."
+        exit 1
+    }
+}
+
 # Define a function to install Git
 install_git() {
     sudo pacman -S git --noconfirm
@@ -325,6 +333,7 @@ main() {
         ["curl"]="install_curl"
         ["wget"]="install_wget"
         ["base-devel"]="install_base_devel"
+        ["yay"]="install_yay"
     )
     select_from_category "Common Tools" common_tools
 
