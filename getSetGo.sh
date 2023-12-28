@@ -328,6 +328,35 @@ install_node() {
     }
 }
 
+# Define a function to install Steam
+install_steam(){
+    sudo pacman -S steam --noconfirm || {
+        echo "Steam installation failed."
+        exit 1
+    }
+}
+
+# Define a function to install the Heroic launcher
+install_heroic(){
+    if [ "$yay_installed" = true ]; then
+        yay -S heroic-games-launcher-bin || {
+            echo "Heroic Games Launcher installation failed."
+            exit 1
+        }
+    else
+        echo "Heroic Games Launcher unavailable without yay."
+    fi
+
+}
+
+# Define a function to install lutris
+install_lutris(){
+    sudo pacman -S lutris --noconfirm || {
+        echo "Lutris installation failed."
+        exit 1
+    }
+}
+
 # Define a function to prompt user for selection within a category
 select_from_category() {
     local category_name="$1"
@@ -437,6 +466,13 @@ main() {
         ["Bitwarden"]="install_bitwarden"
     )
     select_from_category "Utilities" utilities
+
+    declare -A gaming=(
+        ["Steam"]="install_steam"
+        ["Heroic"]="install_heroic"
+        ["Lutris"]="install_lutris"
+    )
+    select_from_category "Gaming" gaming
 
     echo "Installation complete!"
 }
