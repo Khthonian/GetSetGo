@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Check if yay is installed
+if command -v yay >/dev/null 2>&1; then
+    yay_installed=true
+else
+    yay_installed=false
+    echo "Warning: yay is not currently installed. Some functions will be limited."
+fi
+
 # Define a function to update and upgrade system
 update_system() {
     # Don't use --noconfirm for safety
@@ -39,6 +47,7 @@ install_yay() {
         echo "yay installation failed."
         exit 1
     }
+    yay_installed=true
 }
 
 # Define a function to install Git
@@ -186,9 +195,14 @@ configure_git() {
 
 # Define a function to install Microsoft Edge browser
 install_edge() {
-    # TODO: Implement check for pacman wrapper to install from AUR
-    echo "Microsoft Edge installation currently unavailable."
-    exit 1
+    if [ "$yay_installed" = true ]; then
+        yay -S microsoft-edge-stable --noconfirm || {
+            echo "Microsoft Edge installation failed."
+            exit 1
+        }
+    else
+        echo "Microsoft Edge unavailable without yay."
+    fi
 }
 
 # Define a function to install Discord
@@ -209,16 +223,33 @@ install_bitwarden() {
 
 # Define a function to install Spotify
 install_spotify() {
-    # TODO: Implement check for pacman wrapper to install from AUR
-    echo "Spotify installation currently unavailable."
-    exit 1
+    if [ "$yay_installed" = true ]; then
+        yay -S spotify --noconfirm || {
+            echo "Spotify installation failed."
+            exit 1
+        }
+    else
+        echo "Spotify unavailable without yay."
+    fi
 }
 
 # Define a function to install Visual Studio Code
 install_vscode() {
-    # TODO: Implement check for pacman wrapper to install from AUR
-    # TODO: Implement option for open source release
-    echo "Visual Studio Code installation currently unavailable."
+    if [ "$yay_installed" = true ]; then
+        yay -S visual-studio-code-bin --noconfirm || {
+            echo "Visual Studio Code installation failed."
+            exit 1
+        }
+    else
+        echo "Visual Studio Code unavailable without yay."
+    fi
+}
+
+install_code() {
+    sudo pacman -S code --noconfirm || {
+        echo "Code installation failed."
+        exit 1
+    }
 }
 
 # Define a function to install Vim
@@ -247,10 +278,21 @@ install_firefox() {
 
 # Define a function to install Google Chrome browser
 install_chrome() {
-    # TODO: Implement check for pacman wrapper to install from AUR
-    # TODO: Implement option for open source release
-    echo "Google Chrome installation currently unavailable."
-    exit 1
+    if [ "$yay_installed" = true ]; then
+        yay -S google-chrome --noconfirm || {
+            echo "Google Chrome installation failed."
+            exit 1
+        }
+    else
+        echo "Google Chrome unavailable without yay."
+    fi
+}
+
+install_chromium() {
+    sudo pacman -S chromium --noconfirm || {
+        echo "Chromium installation failed."
+        exit 1
+    }
 }
 
 # Define a function to install tmux multiplexer
@@ -269,7 +311,13 @@ install_htop() {
     }
 }
 
-# TODO: Implement option to install btop
+# Define a function to install btop process viewer
+install_btop() {
+    sudo pacman -S btop --noconfirm || {
+        echo "btop installation failed."
+        exit 1
+    }
+}
 
 # Define a function to install nvm and Node
 install_node() {
@@ -362,6 +410,7 @@ main() {
 
     declare -A text_editors=(
         ["VS Code"]="install_vscode"
+        ["Code"]="install_code"
         ["Vim"]="install_vim"
         ["Neovim"]="install_neovim"
     )
@@ -371,6 +420,7 @@ main() {
         ["Microsoft Edge"]="install_edge"
         ["Mozilla Firefox"]="install_firefox"
         ["Google Chrome"]="install_chrome"
+        ["Chromium"]="install_chromium"
     )
     select_from_category "Web Browsers" browsers
 
@@ -383,6 +433,7 @@ main() {
     declare -A utilities=(
         ["tmux"]="install_tmux"
         ["htop"]="install_htop"
+        ["btop"]="install_btop"
         ["Bitwarden"]="install_bitwarden"
     )
     select_from_category "Utilities" utilities
