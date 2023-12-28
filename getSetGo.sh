@@ -2,55 +2,53 @@
 
 # Define a function to update and upgrade system
 update_system() {
-    #
-    sudo apt update && sudo apt upgrade -y || {
-        echo "Update failed"
+    # Don't use --noconfirm for safety
+    sudo pacman -Syu || {
+        echo "Update failed."
         exit 1
     }
 }
 
 # Define a function to install curl
 install_curl() {
-    sudo apt install -y curl || {
-        echo "Curl installation failed"
+    sudo pacman -S curl --noconfirm || {
+        echo "curl installation failed."
         exit 1
     }
 }
 
 # Define a function to install wget
 install_wget() {
-    sudo apt install -y wget || {
-        echo "Wget installation failed"
+    sudo pacman -S wget --noconfirm || {
+        echo "wget installation failed."
         exit 1
     }
 }
 
-# Define a function to install build-essentials
-install_build_essentials() {
-    sudo apt install -y build-essential || {
-        echo "Build-essentials installation failed"
+# Define a function to install base-devel
+install_base_devel() {
+    sudo pacman -S base-devel --noconfirm || {
+        echo "base-devel installation failed."
         exit 1
     }
 }
 
-# Define a function to install Git fro the Git-core PPA
+# Define a function to install Git
 install_git() {
-    sudo add-apt-repository -y ppa:git-core/ppa
-    sudo apt update
-    sudo apt install -y git
+    sudo pacman -S git --noconfirm
     if [ $? -eq 0 ]; then
-        echo "Git installation successful"
+        echo "Git installation successful."
         configure_git
     else
-        echo "Git installation failed"
+        echo "Git installation failed."
         exit 1
     fi
 }
 
-# Define a function to install Zsh and switch the default shell for the user who initiates the script
+# Define a function to install zsh and switch the default shell for the user who initiates the script
 install_zsh() {
-    sudo apt install -y zsh || {
-        echo "Zsh installation failed"
+    sudo pacman -S zsh --noconfirm || {
+        echo "zsh installation failed."
         exit 1
     }
     # Determine the user who ran the script
@@ -61,20 +59,18 @@ install_zsh() {
     fi
     # Get the current shell for the user
     user_shell=$(getent passwd $user | cut -d: -f7)
-    # Switch the default user shell to Zsh
+    # Switch the default user shell to zsh
     chsh -s $(which zsh) $user || {
-        echo "Changing default shell to Zsh failed"
+        echo "Changing default shell to zsh failed."
         exit 1
     }
-    echo "Default shell for $user changed from $user_shell to $(which zsh)"
+    echo "Default shell for $user changed from $user_shell to $(which zsh)."
 }
 
-# Define a function to install Fish and switch the default shell for the user who initiates the script
+# Define a function to install fish and switch the default shell for the user who initiates the script
 install_fish() {
-    sudo apt-add-repository ppa:fish-shell/release-3
-    sudo apt update
-    sudo apt install -y fish || {
-        echo "Fish installation failed"
+    sudo pacman -S fish --noconfirm || {
+        echo "fish installation failed."
         exit 1
     }
     # Determine the user who ran the script
@@ -85,43 +81,42 @@ install_fish() {
     fi
     # Get the current shell for the user
     user_shell=$(getent passwd $user | cut -d: -f7)
-    # Switch the default user shell to Fish
+    # Switch the default user shell to fish
     chsh -s $(which fish) $user || {
-        echo "Changing default shell to Fish failed"
+        echo "Changing default shell to fish failed."
         exit 1
     }
-    echo "Default shell for $user changed from $user_shell to $(which fish)"
+    echo "Default shell for $user changed from $user_shell to $(which fish)."
 }
 
-# Define a function to install Kitty terminal
+# Define a function to install kitty terminal
 install_kitty() {
-    sudo apt install -y kitty || {
-        echo "Kitty installation failed"
+    sudo pacman -S kitty --noconfirm || {
+        echo "kitty installation failed."
         exit 1
     }
 }
 
 # Define a function to install Python 3 with pip
 install_python() {
-    sudo apt install -y python3 python3-pip || {
-        echo "Python installation failed"
+    sudo pacman -S python python-pip --noconfirm || {
+        echo "Python installation failed."
         exit 1
     }
 }
 
 # Define a function to install Lua
 install_lua() {
-    # TODO: Update the version when necessary
-    sudo apt install -y lua5.3 || {
-        echo "Lua installation failed"
+    sudo pacman -S lua || {
+        echo "Lua installation failed."
         exit 1
     }
 }
 
 # Define a function to install Go
 install_go() {
-    sudo apt install -y golang-go || {
-        echo "Go installation failed"
+    sudo pacman -S go --noconfirm || {
+        echo "Go installation failed."
         exit 1
     }
 }
@@ -129,15 +124,15 @@ install_go() {
 # Define a function to install Rust
 install_rust() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh || {
-        echo "Rust installation failed"
+        echo "Rust installation failed."
         exit 1
     }
 }
 
 # Define a function to install GCC compiler
 install_gcc() {
-    sudo apt install -y gcc || {
-        echo "GCC installation failed"
+    sudo pacman -S gcc --noconfirm || {
+        echo "gcc installation failed."
         exit 1
     }
 }
@@ -145,16 +140,16 @@ install_gcc() {
 # Define a function to install Anaconda
 install_anaconda() {
     # TODO: Update the version when necessary
-    wget https://repo.anaconda.com/archive/Anaconda3-2023.07-2-Linux-x86_64.sh
-    bash Anaconda3-2023.07-2-Linux-x86_64.sh
-    rm Anaconda3-2023.07-2-Linux-x86_64.sh || {
-        echo "Anaconda installation failed"
+    wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
+    bash Anaconda3-2023.09-0-Linux-x86_64.sh
+    rm Anaconda3-2023.09-0-Linux-x86_64.sh || {
+        echo "Anaconda installation failed."
         exit 1
     }
     # Update Anaconda
     source ~/anaconda3/bin/activate
     conda update -y --all || {
-        echo "Anaconda update failed"
+        echo "Anaconda update failed."
         exit 1
     }
 }
@@ -176,128 +171,103 @@ configure_git() {
     git config --global init.defaultBranch main
     git config --global color.ui auto
     git config --global pull.rebase true || {
-        echo "Git configuration failed"
+        echo "Git configuration failed."
         exit 1
     }
 }
 
 # Define a function to install Microsoft Edge browser
 install_edge() {
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
-    sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-    sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
-    sudo rm microsoft.gpg
-    sudo apt update
-    sudo apt install -y microsoft-edge-stable || {
-        echo "Microsoft Edge installation failed"
-        exit 1
-    }
+    # TODO: Implement check for pacman wrapper to install from AUR
+    echo "Microsoft Edge installation currently unavailable."
+    exit 1
 }
 
 # Define a function to install Discord
 install_discord() {
-    wget -O discord.deb "https://discord.com/api/download?platform=linux&format=deb"
-    sudo dpkg -i discord.deb
-    sudo apt install -fy
-    rm discord.deb || {
-        echo "Discord installation failed"
+    sudo pacman -S discord --noconfirm || {
+        echo "Discord installation failed."
         exit 1
     }
 }
 
 # Define a function to install Bitwarden
 install_bitwarden() {
-    wget -O bitwarden.deb "https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb"
-    sudo dpkg -i bitwarden.deb
-    sudo apt install -fy
-    rm bitwarden.deb || {
-        echo "Bitwarden installation failed"
+    sudo pacman -S bitwarden --noconfirm || {
+        echo "Bitwarden installation failed."
         exit 1
     }
 }
 
 # Define a function to install Spotify
 install_spotify() {
-    curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-    sudo apt update
-    sudo apt install -y spotify-client || {
-        echo "Spotify installation failed"
-        exit 1
-    }
+    # TODO: Implement check for pacman wrapper to install from AUR
+    echo "Spotify installation currently unavailable."
+    exit 1
 }
 
 # Define a function to install Visual Studio Code
 install_vscode() {
-    sudo apt install -y software-properties-common apt-transport-https curl
-    curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-    sudo add-apt-repository -y "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
-    sudo apt update
-    sudo apt install -y code || {
-        echo "VS Code installation failed"
-        exit 1
-    }
+    # TODO: Implement check for pacman wrapper to install from AUR
+    # TODO: Implement option for open source release
+    echo "Visual Studio Code installation currently unavailable."
 }
 
 # Define a function to install Vim
 install_vim() {
-    sudo apt install -y vim || {
-        echo "Vim installation failed"
+    sudo pacman -S vim --noconfirm || {
+        echo "Vim installation failed."
         exit 1
     }
 }
 
 # Define a function to install Neovim
 install_neovim() {
-    sudo apt install -y neovim || {
-        echo "NeoVim installation failed"
+    sudo pacman -S neovim --noconfirm || {
+        echo "Neovim installation failed."
         exit 1
     }
 }
 
 # Define a function to install Mozilla Firefox browser
 install_firefox() {
-    sudo apt install -y firefox || {
-        echo "Firefox installation failed"
+    sudo pacman -S firefox --noconfirm || {
+        echo "Firefox installation failed."
         exit 1
     }
 }
 
 # Define a function to install Google Chrome browser
 install_chrome() {
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo dpkg -i google-chrome-stable_current_amd64.deb
-    sudo apt install -fy
-    rm google-chrome-stable_current_amd64.deb || {
-        echo "Google Chrome installation failed"
-        exit 1
-    }
+    # TODO: Implement check for pacman wrapper to install from AUR
+    # TODO: Implement option for open source release
+    echo "Google Chrome installation currently unavailable."
+    exit 1
 }
 
 # Define a function to install tmux multiplexer
 install_tmux() {
-    sudo apt install -y tmux || {
-        echo "tmux installation failed"
+    sudo pacman -S tmux --noconfirm || {
+        echo "tmux installation failed."
         exit 1
     }
 }
 
 # Define a function to install htop process viewer
 install_htop() {
-    sudo apt install -y htop || {
-        echo "htop installation failed"
+    sudo pacman -S htop --noconfirm || {
+        echo "htop installation failed."
         exit 1
     }
 }
 
+# TODO: Implement option to install btop
+
 # Define a function to install nvm and Node
 install_node() {
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    nvm install --lts
-    nvm use --lts || {
-        echo "Node installation failed"
+    # TODO: Implement check for pacman wrapper to install nvm from AUR
+    sudo pacman -S nodejs --noconfirm || {
+        echo "Node installation failed."
         exit 1
     }
 }
@@ -352,9 +322,9 @@ main() {
     update_system
 
     declare -A common_tools=(
-        ["Curl"]="install_curl"
-        ["Wget"]="install_wget"
-        ["Build-essentials"]="install_build_essentials"
+        ["curl"]="install_curl"
+        ["wget"]="install_wget"
+        ["base-devel"]="install_base_devel"
     )
     select_from_category "Common Tools" common_tools
 
@@ -367,7 +337,7 @@ main() {
 
     declare -A dev_tools=(
         ["Git"]="install_git"
-        ["GCC"]="install_gcc"
+        ["gcc"]="install_gcc"
         ["Anaconda"]="install_anaconda"
         ["Node.js"]="install_node"
     )
@@ -384,7 +354,7 @@ main() {
     declare -A text_editors=(
         ["VS Code"]="install_vscode"
         ["Vim"]="install_vim"
-        ["NeoVim"]="install_neovim"
+        ["Neovim"]="install_neovim"
     )
     select_from_category "Text Editors" text_editors
 
