@@ -12,6 +12,7 @@ This BASH script automates the setup process for a fresh Arch Linux system. It i
 - Web browsers
 - Media
 - Utilities
+- Gaming launchers
 
 ## Usage
 
