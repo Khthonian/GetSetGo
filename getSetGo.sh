@@ -43,10 +43,17 @@ install_base_devel() {
 
 # Define a function to install yay
 install_yay() {
-    sudo pacman -S yay --noconfirm || {
+    git clone https://aur.archlinux.org/yay.git || {
+        echo "Failed to clone yay repository."
+        exit 1
+    }
+    cd yay
+    makepkg -si --noconfirm || {
         echo "yay installation failed."
         exit 1
     }
+    cd ..
+    rm -rf yay
     yay_installed=true
 }
 
