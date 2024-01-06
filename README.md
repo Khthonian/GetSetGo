@@ -23,7 +23,7 @@ This BASH script automates the setup process for a fresh Arch Linux system. It i
    ```
 3. Run the script with superuser privileges:
    ```bash
-   sudo ./getSetGo.sh
+   ./getSetGo.sh
    ```
 
 ## Git Configuration
