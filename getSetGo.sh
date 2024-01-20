@@ -326,7 +326,7 @@ install_btop() {
     }
 }
 
-install_ranger(){
+install_ranger() {
     sudo pacman -S ranger --noconfirm || {
         echo "ranger installation failed."
         exit 1
@@ -343,7 +343,7 @@ install_node() {
 }
 
 # Define a function to install Steam
-install_steam(){
+install_steam() {
     sudo pacman -S steam --noconfirm || {
         echo "Steam installation failed."
         exit 1
@@ -351,7 +351,7 @@ install_steam(){
 }
 
 # Define a function to install the Heroic launcher
-install_heroic(){
+install_heroic() {
     if [ "$yay_installed" = true ]; then
         yay -S heroic-games-launcher-bin || {
             echo "Heroic Games Launcher installation failed."
@@ -364,7 +364,7 @@ install_heroic(){
 }
 
 # Define a function to install lutris
-install_lutris(){
+install_lutris() {
     sudo pacman -S lutris --noconfirm || {
         echo "Lutris installation failed."
         exit 1
