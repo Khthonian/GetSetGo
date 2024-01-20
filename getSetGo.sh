@@ -326,6 +326,13 @@ install_btop() {
     }
 }
 
+install_ranger(){
+    sudo pacman -S ranger --noconfirm || {
+        echo "ranger installation failed."
+        exit 1
+    }
+}
+
 # Define a function to install nvm and Node
 install_node() {
     # TODO: Implement check for pacman wrapper to install nvm from AUR
@@ -471,6 +478,7 @@ main() {
         ["htop"]="install_htop"
         ["btop"]="install_btop"
         ["Bitwarden"]="install_bitwarden"
+        ["Ranger"]="install_ranger"
     )
     select_from_category "Utilities" utilities
 
