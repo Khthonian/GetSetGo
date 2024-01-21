@@ -340,6 +340,14 @@ install_node() {
         echo "Node installation failed."
         exit 1
     }
+    if [ "$yay_installed" = true ]; then
+        yay -S nvm || {
+            echo "nvm installation failed."
+            exit 1
+        }
+    else
+        echo "nvm installation unavailable without yay."
+    fi
 }
 
 # Define a function to install Steam
