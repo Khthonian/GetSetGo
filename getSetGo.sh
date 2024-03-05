@@ -290,6 +290,14 @@ install_htop() {
     }
 }
 
+# Define a functon to install btop process viewer using snap
+install_btop() {
+    sudo snap install btop || {
+        echo "btop installation failed"
+        exit 1
+    }
+}
+
 # Define a function to install nvm and Node
 install_node() {
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
@@ -298,6 +306,14 @@ install_node() {
     nvm install --lts
     nvm use --lts || {
         echo "Node installation failed"
+        exit 1
+    }
+}
+
+# Define a function to install steam
+install_steam(){
+    sudo apt install -y steam || {
+        echo "Steam installation failed"
         exit 1
     }
 }
@@ -404,9 +420,15 @@ main() {
     declare -A utilities=(
         ["tmux"]="install_tmux"
         ["htop"]="install_htop"
+        ["btop"]="install_btop"
         ["Bitwarden"]="install_bitwarden"
     )
     select_from_category "Utilities" utilities
+
+    declare -A gaming=(
+        ["Steam"]="install_steam"
+    )
+    select_from_category "Gaming" gaming
 
     echo "Installation complete!"
 }
